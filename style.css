@@ -1,0 +1,1077 @@
+.modal-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  
+}
+.modal-content h2 {
+  width: 100%;
+  margin-bottom: 18px;
+}
+.modal-content .booking-info {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Blur overlay for Google Maps embed */
+.maps-blur-wrap {
+  position: relative;
+}
+.maps-blur-overlay {
+  position: absolute;
+  left: 0; top: 0; width: 100%; height: 100%;
+  z-index: 2;
+  pointer-events: auto;
+  background: rgba(20,12,30,0.12);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.3s;
+  border-radius: 16px;
+}
+.maps-blur-wrap:hover .maps-blur-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Paksa icon kalender dan jam di input booking online jadi putih (Chrome/Edge/Safari) */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1) grayscale(1) contrast(100);
+  opacity: 1;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M19,4h-1V2h-2v2H8V2H6v2H5C3.9,4,3,4.9,3,6v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V6C21,4.9,20.1,4,19,4z M19,20H5V9h14V20z M19,7H5V6h14V7z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,8v5h5v-2h-3V8H12z M12,4C7.03,4,3,8.03,3,13s4.03,9,9,9s9-4.03,9-9S16.97,4,12,4z M12,20c-3.86,0-7-3.14-7-7s3.14-7,7-7 s7,3.14,7,7S15.86,20,12,20z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center right;
+}
+/* Paksa icon tanggal dan jam di input booking online jadi putih (cross-browser) */
+input[type="date"], input[type="time"] {
+  color-scheme: dark;
+  color: var(--text);
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1) grayscale(1) contrast(100);
+  opacity: 1;
+}
+input[type="date"]::-ms-input-placeholder,
+input[type="time"]::-ms-input-placeholder {
+  color: var(--text);
+}
+input[type="date"]::-moz-placeholder,
+input[type="time"]::-moz-placeholder {
+  color: var(--text);
+}
+input[type="date"]::-webkit-input-placeholder,
+input[type="time"]::-webkit-input-placeholder {
+  color: var(--text);
+}
+input[type="date"]:focus::-webkit-calendar-picker-indicator,
+input[type="time"]:focus::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1) grayscale(1) contrast(100);
+  opacity: 1;
+}
+/* Warna putih untuk icon tanggal dan jam di input booking */
+input[type="date"], input[type="time"] {
+  color-scheme: dark;
+  color: var(--text);
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+:root {
+  --bg: #0f0817;
+  --card: #1a1025;
+  --text: #f0e6ff;
+  --muted: #b9a6d8;
+  --brand: #a855f7;
+  --accent: #c084fc;
+  --radius: 16px;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Reset & Base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+
+/* Layout */
+.container { width: min(1100px, 90%); margin: auto; }
+header { background: rgba(15, 8, 23, 0.9); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;  }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+.logo { width: 40px; height: 40px; border-radius: 12px; background: radial-gradient(circle, var(--brand), var(--accent)); }
+@keyframes brand-fadein {
+  0% { opacity: 0; transform: translateY(-30px) scale(0.9); }
+  60% { opacity: 1; transform: translateY(8px) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.brand-title {
+  font-size: 2.1rem;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(168,85,247,0.18), 0 1px 0 #fff;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: inline-block;
+  opacity: 0;
+  animation: brand-fadein 0.9s cubic-bezier(.4,2,.3,1) 0.1s forwards;
+  cursor: pointer;
+  transition: color 0.18s, text-shadow 0.18s, transform 0.22s cubic-bezier(.4,2,.3,1);
+}
+.brand-title:hover, .brand-title:focus-visible {
+  transform: scale(1.13);
+  color: var(--brand);
+  text-shadow: 0 4px 24px rgba(168,85,247,0.28), 0 1px 0 #fff;
+}
+@media (max-width: 768px) {
+  .brand-title { font-size: 1.4rem; }
+}
+.links { display: flex; gap: 18px; align-items: center; }
+.links a {
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(.4,2,.3,1), box-shadow 0.18s;
+}
+.links a:hover {
+  transform: scale(1.12) translateY(-2px);
+  box-shadow: 0 4px 18px rgba(168,85,247,0.12);
+  color: var(--brand);
+}
+.btn {
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  padding: 10px 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(.4,2,.3,1), box-shadow 0.18s, background 0.18s, filter 0.18s;
+}
+.btn.alt {
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  color: var(--brand);
+  transition: transform 0.18s cubic-bezier(.4,2,.3,1), box-shadow 0.18s, background 0.18s, color 0.18s;
+}
+.btn:hover {
+  transform: scale(1.12) translateY(-2px);
+  box-shadow: 0 8px 32px rgba(168,85,247,0.22);
+  filter: brightness(1.13);
+  background: linear-gradient(135deg, var(--accent), var(--brand));
+}
+.btn.alt:hover {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  transform: scale(1.12) translateY(-2px);
+  box-shadow: 0 8px 32px rgba(168,85,247,0.22);
+}
+.btn:active, .btn.alt:active {
+  transform: scale(0.96);
+  filter: brightness(0.95);
+}
+
+/* Hero */
+.hero { padding: 80px 0; }
+
+/* wrap inside hero needs to be the grid so layout works even when .wrap is used */
+.hero .wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.badge {
+  display: inline-block;
+  background: rgba(168, 85, 247, 0.2);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+.lead { color: var(--muted); margin: 12px 0 20px; }
+.imgbox {
+  background: radial-gradient(circle at 70% 20%, #321b55, #0f0817);
+  border-radius: var(--radius);
+  aspect-ratio: 16/9;
+  position: relative; /* required for absolute sparkle overlay */
+  overflow: hidden; /* clip img to radius */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Site title (L three) — lebih besar */
+.site-title {
+  font-size: 2.25rem;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.sparkle {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -20%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--brand), var(--accent), var(--brand));
+  filter: blur(28px);
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* Gambar hero di dalam .imgbox */
+.imgbox img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* memotong/menutupi area tanpa merusak rasio */
+  border-radius: var(--radius);
+}
+
+/* make sure hero content stacks nicely on small screens */
+@media (max-width: 768px) {
+  .hero .wrap { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+  .car { display: flex; justify-content: center; }
+  .imgbox { aspect-ratio: 4/3; }
+  .sparkle { top: 10%; transform: translate(-50%, -10%); width: 100px; height: 100px; }
+  .site-title { font-size: 1.6rem; }
+}
+
+/* Sections */
+section { padding: 60px 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+h2 { font-size: 1.8rem; margin-bottom: 8px; }
+.section-anim {
+  cursor: pointer;
+  transition: color 0.18s, text-shadow 0.18s;
+}
+.section-anim:hover {
+  color: var(--brand);
+  text-shadow: 0 2px 16px rgba(168,85,247,0.18);
+}
+.sub { color: var(--muted); margin-bottom: 20px; }
+
+/* Cards & Layouts */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.card h3 { margin-bottom: 6px; }
+.chip {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+/* Pricing */
+.pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+.price-card {
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  text-align: center;
+  position: relative;
+}
+.price-card .tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.big { font-size: 2rem; font-weight: 700; margin: 6px 0; }
+
+/* Form */
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.field label { font-size: 0.9rem; color: var(--muted); }
+input, select, textarea {
+  background: #513378df;
+  border: 1px solid rgba(162, 114, 227, 0.611);
+  color: var(--text);
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+/* Footer */
+footer {
+  background: #12091e;
+  text-align: center;
+  padding: 20px 0;
+  color: var(--muted);
+  margin-top: 40px;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  background: linear-gradient(180deg, rgba(26,16,37,0.98), rgba(20,12,30,0.98));
+  color: var(--text);
+  padding: 14px 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 240ms ease, opacity 240ms ease;
+  z-index: 200;
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast .message { margin-bottom: 8px; color: var(--muted); font-size: 0.95rem; }
+.toast .actions { display: flex; gap: 8px; justify-content: flex-end; }
+.toast .actions .btn { padding: 8px 10px; border-radius: 10px; font-size: 0.9rem; }
+
+/* Maps actions (lokasi) */
+.maps-actions { display: flex; gap: 10px; margin-top: 12px; justify-content: flex-end; }
+.maps-actions .btn.alt { background: transparent; border: 1px solid rgba(192, 162, 255, 0.12); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .cta { justify-content: center; }
+}
+
+
+/* ✨ Animasi Scroll */
+section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 🌗 Mode Gelap Otomatis */
+body.dark-mode {
+  background: #0b0510;
+  color: #e0d6ff;
+}
+
+/* 🔝 Tombol Scroll ke Atas */
+.scroll-top {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: linear-gradient(135deg, #a855f7, #c084fc);
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 1000;
+}
+.scroll-top:hover {
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+
+
+/* =====================================
+  🕒 TOAST BOOKING PROFESIONAL
+   ===================================== */
+.toast-booking {
+  position: fixed;
+  right: 24px;
+  bottom: -120px;
+  background: linear-gradient(135deg, rgba(26,16,37,0.98), rgba(20,12,30,0.98));
+  color: var(--text);
+  border-left: 4px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  padding: 18px 20px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 360px;
+  max-width: 90%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+  z-index: 3000;
+  overflow: hidden;
+}
+
+.toast-booking.show {
+  opacity: 1;
+  transform: translateY(0);
+  bottom: 30px;
+}
+
+.toast-booking .toast-icon {
+  font-size: 1.8rem;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(192,132,252,0.8));
+}
+
+.toast-booking .toast-body {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.toast-booking .toast-body strong {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.toast-booking .toast-body b {
+  color: var(--accent);
+}
+
+.toast-booking .toast-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.toast-booking .toast-close:hover {
+  color: var(--accent);
+}
+
+/* Progress bar */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  width: 0%;
+  border-radius: 0 0 12px 12px;
+  transition: width 6s linear;
+}
+
+
+/* ============================================
+   🚗 ANIMASI HERO IMAGE — EFEK VISUAL MOBIL
+   ============================================ */
+
+/* Animasi mobil melayang halus */
+.hero-img {
+  width: 100%;
+  border-radius: var(--radius);
+  object-fit: cover;
+  animation: floatCar 4s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes floatCar {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Efek cahaya menggeser dari kiri ke kanan */
+.shine-overlay {
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shineMove 5s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes shineMove {
+  0% { left: -75%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* Efek sparkle di sekitar mobil */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff, transparent 60%);
+  box-shadow: 0 0 10px rgba(255,255,255,0.7);
+  top: 50%;
+  left: 50%;
+  animation: sparkleMove 6s infinite ease-in-out;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@keyframes sparkleMove {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translate(-70%, -80%) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-30%, -30%) scale(0.9);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translate(-80%, -60%) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* Saat hover, mobil sedikit membesar & lebih terang */
+.imgbox:hover .hero-img {
+  transform: scale(1.05);
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(1.2);
+}
+
+/* Saat hover, cahaya bergerak lebih cepat */
+.imgbox:hover .shine-overlay {
+  animation: shineMove 2s ease-in-out infinite;
+}
+
+
+/* Efek hover untuk badge ulasan */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(168, 85, 247, 0.2);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: #e8d7ff;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.35s ease;
+  box-shadow: 0 0 0 rgba(168,85,247,0);
+}
+
+/* Efek ketika di-hover */
+.badge:hover {
+  transform: scale(1.12);
+  background: linear-gradient(135deg, #a855f7, #c084fc);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(192,132,252,0.6);
+  cursor: pointer;
+}
+
+/* Bintang berputar lembut saat hover */
+.badge:hover::before {
+  content: "★";
+  display: inline-block;
+  margin-right: 6px;
+  animation: spinStar 1s ease forwards;
+}
+
+/* Animasi bintang */
+@keyframes spinStar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(192,132,252,0.2); }
+  50% { box-shadow: 0 0 18px rgba(192,132,252,0.45); }
+}
+
+.badge {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+
+/* Efek teks angka ulasan */
+.badge .rating,
+.badge .reviews {
+  font-weight: 700;
+  color: var(--accent);
+  transition: color 0.4s ease;
+}
+
+.badge:hover .rating,
+.badge:hover .reviews {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(192,132,252,0.7);
+}
+
+
+
+/* ================================
+   💬 TOAST NOTIFIKASI PEMBAYARAN
+   ================================ */
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: -120px;
+  background: linear-gradient(135deg, rgba(26,16,37,0.98), rgba(20,12,30,0.98));
+  color: var(--text);
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 340px;
+  max-width: 90%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  z-index: 2000;
+}
+
+/* Toast muncul */
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+  bottom: 24px;
+}
+
+/* Variasi sukses */
+.toast-success {
+  border-left: 4px solid var(--accent);
+}
+
+/* Ikon toast */
+.toast-icon {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 8px rgba(192,132,252,0.8));
+}
+
+/* Isi body toast */
+.toast-body {
+  flex: 1;
+  font-size: 0.9rem;
+}
+.toast-body strong {
+  color: var(--accent);
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.toast-body p {
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Tombol close (X) */
+.toast-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.toast-close:hover {
+  color: var(--accent);
+}
+
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes modalFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.9); }
+}
+.fade-in .modal-content {
+  animation: modalFadeIn 0.3s ease forwards;
+}
+.fade-out .modal-content {
+  animation: modalFadeOut 0.3s ease forwards;
+}
+
+
+
+
+    /* --- Tentang Kami Section (Versi Ungu L three Car Wash) --- */
+    #about {
+      padding: 80px 0;
+      background: linear-gradient(180deg, #140e2144 0%, #1d063100 100%);
+      color: #f2f2f2;
+      overflow: hidden;
+    }
+
+    #about h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 4rem;
+      background: linear-gradient(90deg, #fdfdfd, #e3e3e3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-style: inherit;
+    }
+
+    .about-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      margin-top: 5rem;
+    }
+
+    .about-text {
+      flex: 1 1 55%;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #ffffff;
+    }
+
+    .about-text strong {
+      color: #aa70f6;
+    }
+
+    .about-text p {
+      margin-bottom: 1rem;
+    }
+
+    .about-image {
+      flex: 1 1 40%;
+      text-align: center;
+    }
+
+    .about-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(165, 106, 223, 0.2);
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+
+    .about-image img:hover {
+      transform: scale(1.04);
+      box-shadow: 0 14px 32px rgba(165, 106, 223, 0.28);
+    }
+
+    /* --- Animasi masuk (fade + slide up) --- */
+    #about {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 800ms cubic-bezier(.2,.8,.2,1),
+                  transform 800ms cubic-bezier(.2,.8,.2,1);
+      will-change: opacity, transform;
+    }
+
+    html.is-loaded #about {
+      opacity: 1;
+      transform: none;
+      transition-delay: 250ms;
+    }
+
+    /* Responsif */
+    @media (max-width: 768px) {
+      .about-content {
+        flex-direction: column;
+      }
+
+      .about-text, .about-image {
+        flex: 1 1 100%;
+        text-align: center;
+      }
+
+      #about h2 {
+        font-size: 1.7rem;
+      }
+    }
+
+    /* Hormati preferensi pengurangan gerakan */
+    @media (prefers-reduced-motion: reduce) {
+      #about {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+
+
+
+    /* --- Rating Bintang untuk Paket Harga --- */
+    .rating-stars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-top: 0.4rem;
+      color: #ffb400; /* warna emas bintang */
+      font-weight: bold;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .rating-stars span.rating-value {
+      font-size: 0.9rem;
+      color: #555;
+      margin-left: 6px;
+      font-weight: normal;
+    }
+
+    /* Tambahkan efek hover pada kartu harga */
+    .price-card {
+      position: relative;
+      border-radius: 16px;
+      transition: transform 240ms ease, box-shadow 240ms ease;
+    }
+
+    .price-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(171, 98, 255, 0.25);
+    }
+
+    /* Tambahkan highlight sesuai rating */
+    .price-card[data-rating-high="true"],
+    .price-card:hover {
+      border: 2px solid #b56ef7;
+    }
+
+    /* Warna tag agar senada */
+    .price-card .tag {
+      background: #b56ef7;
+      color: white;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+
+    /* Animasi lembut muncul */
+    .rating-stars {
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 500ms ease, transform 500ms ease;
+    }
+
+    html.is-loaded .rating-stars {
+      opacity: 1;
+      transform: none;
+      transition-delay: 150ms;
+    }
+
+    /* Responsif */
+    @media (max-width: 768px) {
+      .rating-stars {
+        font-size: 1rem;
+      }
+      .rating-stars span.rating-value {
+        font-size: 0.85rem;
+      }
+    }
+
+
+
+
+/* Section Harga */
+#harga {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.paket-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.paket-card {
+  background: rgba(192,132,252,0.7);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 280px;
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.paket-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.paket-card h3 {
+  color: #007bff;
+  margin-bottom: 8px;
+}
+
+.harga {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #222;
+  margin: 10px 0;
+}
+
+.rating {
+  font-size: 1.3rem;
+  color: #ffcc00;
+}
+
+/* Tombol Umum */
+.btn {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.864);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgba(82, 43, 137, 0.648);
+  padding: 30px;
+  border-radius: 12px;
+  width: 350px;
+  text-align: center;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Notifikasi */
+.notif {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #4caf50;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+
+/* === Styling untuk gambar di bagian Layanan Kami === */
+#layanan .card.service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(165, 106, 223, 0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#layanan .card.service:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(165, 106, 223, 0.553);
+}
+
+/* Gambar di atas teks */
+#layanan .service-img {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+/* Efek zoom halus saat hover */
+#layanan .service-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  filter: brightness(0.95);
+}
+
+#layanan .card.service:hover .service-img img {
+  transform: scale(1.08);
+  filter: brightness(1);
+}
+
+/* Judul dan teks */
+#layanan .card.service h3 {
+  margin: 0.5rem 0 0.3rem;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+#layanan .card.service p {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Grid responsif */
+#layanan .grid.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
